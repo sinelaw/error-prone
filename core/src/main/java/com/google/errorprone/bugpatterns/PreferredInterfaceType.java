@@ -68,10 +68,11 @@ import com.sun.tools.javac.code.Symbol.MethodSymbol;
 import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Types;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Stack;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.type.TypeKind;
 
@@ -132,14 +133,14 @@ public final class PreferredInterfaceType extends BugChecker implements Compilat
     ListMultimap<Symbol, Type> symbolsToType = ArrayListMultimap.create();
 
     new TreePathScanner<Void, Void>() {
-      private final Stack<Symbol> currentMethod = new Stack<>();
+      private final Deque<Symbol> currentMethod = new ArrayDeque<>();
 
       @Override
       public Void visitMethod(MethodTree node, Void unused) {
         MethodSymbol methodSymbol = getSymbol(node);
-        currentMethod.push(methodSymbol);
+        currentMethod.addLast(methodSymbol);
         super.visitMethod(node, null);
-        currentMethod.pop();
+        currentMethod.removeLast();
         return null;
       }
 
@@ -162,17 +163,18 @@ public final class PreferredInterfaceType extends BugChecker implements Compilat
 
       @Override
       public Void visitReturn(ReturnTree node, Void unused) {
-        if (!currentMethod.isEmpty() && currentMethod.peek() != null) {
-          symbolsToType.put(currentMethod.peek(), getType(node.getExpression()));
+        var method = currentMethod.peekLast();
+        if (method != null) {
+          symbolsToType.put(method, getType(node.getExpression()));
         }
         return super.visitReturn(node, unused);
       }
 
       @Override
       public Void visitLambdaExpression(LambdaExpressionTree node, Void unused) {
-        currentMethod.push(null);
+        currentMethod.addLast(null);
         super.visitLambdaExpression(node, unused);
-        currentMethod.pop();
+        currentMethod.removeLast();
         return null;
       }
     }.scan(state.getPath(), null);
