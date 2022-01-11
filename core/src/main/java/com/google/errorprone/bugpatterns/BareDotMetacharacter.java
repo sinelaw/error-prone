@@ -37,7 +37,8 @@ public class BareDotMetacharacter extends AbstractPatternSyntaxChecker
     implements MethodInvocationTreeMatcher {
 
   @Override
-  protected final Description matchRegexLiteral(MethodInvocationTree tree, String regex) {
+  protected final Description matchRegexLiteral(
+      MethodInvocationTree tree, String regex, int flags) {
     if (regex.equals(".")) {
       return describeMatch(tree, SuggestedFix.replace(tree.getArguments().get(0), "\"\\\\.\""));
     } else {

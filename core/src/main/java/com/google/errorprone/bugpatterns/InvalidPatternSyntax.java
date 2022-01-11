@@ -34,9 +34,10 @@ public class InvalidPatternSyntax extends AbstractPatternSyntaxChecker {
   private static final String MESSAGE_BASE = "Invalid syntax used for a regular expression: ";
 
   @Override
-  protected final Description matchRegexLiteral(MethodInvocationTree tree, String regex) {
+  protected final Description matchRegexLiteral(
+      MethodInvocationTree tree, String pattern, int flags) {
     try {
-      Pattern.compile(regex);
+      Pattern.compile(pattern, flags);
       return NO_MATCH;
     } catch (PatternSyntaxException e) {
       return buildDescription(tree).setMessage(MESSAGE_BASE + e.getMessage()).build();
