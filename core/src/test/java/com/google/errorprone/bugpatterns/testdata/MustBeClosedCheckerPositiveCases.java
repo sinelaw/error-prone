@@ -112,6 +112,7 @@ class MustBeClosedCheckerPositiveCases {
   }
 
   void positiveCase8() {
+    // Lambda has a fixless finding because no reasonable fix can be suggested
     Lambda expression =
         () -> {
           // BUG: Diagnostic contains:
@@ -120,6 +121,11 @@ class MustBeClosedCheckerPositiveCases {
   }
 
   void positiveCase9() {
+    // TODO(b/235827063): BUG: Diagnostic contains:
+    Lambda expression = new Foo()::mustBeClosedAnnotatedMethod;
+  }
+
+  void positiveCase10() {
     new Foo() {
       @Override
       public Closeable mustBeClosedAnnotatedMethod() {

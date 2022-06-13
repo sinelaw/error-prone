@@ -138,4 +138,8 @@ public class MustBeClosedCheckerNegativeCases {
           return new MustBeClosedAnnotatedConstructor();
         });
   }
+
+  void methodReferenceReturningCloseable() {
+    consumeCloseable(MustBeClosedAnnotatedConstructor::new);
+  }
 }

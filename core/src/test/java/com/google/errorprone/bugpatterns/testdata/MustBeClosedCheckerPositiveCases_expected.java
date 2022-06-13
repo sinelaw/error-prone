@@ -23,6 +23,7 @@ class MustBeClosedCheckerPositiveCases {
 
   class DoesNotImplementAutoCloseable {
     @MustBeClosed
+    // BUG: Diagnostic contains: MustBeClosed should only annotate constructors of AutoCloseables.
     DoesNotImplementAutoCloseable() {}
 
     @MustBeClosed
@@ -124,6 +125,11 @@ class MustBeClosedCheckerPositiveCases {
   }
 
   void positiveCase9() {
+    // TODO(b/235827063): BUG: Diagnostic contains:
+    Lambda expression = new Foo()::mustBeClosedAnnotatedMethod;
+  }
+
+  void positiveCase10() {
     new Foo() {
       @MustBeClosed
       @Override
