@@ -154,6 +154,7 @@ import com.google.errorprone.bugpatterns.IgnoredPureGetter;
 import com.google.errorprone.bugpatterns.ImmutableMemberCollection;
 import com.google.errorprone.bugpatterns.ImmutableSetForContains;
 import com.google.errorprone.bugpatterns.ImplementAssertionWithChaining;
+import com.google.errorprone.bugpatterns.ImplicitToString;
 import com.google.errorprone.bugpatterns.Incomparable;
 import com.google.errorprone.bugpatterns.IncompatibleModifiersChecker;
 import com.google.errorprone.bugpatterns.InconsistentCapitalization;
@@ -662,6 +663,7 @@ public class BuiltInCheckerSuppliers {
           IdentityHashMapBoxing.class,
           IgnoredPureGetter.class,
           ImmutableChecker.class,
+          ImplicitToString.class,
           Incomparable.class,
           IncompatibleArgumentType.class,
           IncompatibleModifiersChecker.class,

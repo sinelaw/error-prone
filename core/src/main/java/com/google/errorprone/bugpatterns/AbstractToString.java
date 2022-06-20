@@ -198,7 +198,7 @@ public abstract class AbstractToString extends BugChecker
     handleStringifiedTree(tree, tree, toStringKind, state);
   }
 
-  private void handleStringifiedTree(
+  protected void handleStringifiedTree(
       Tree parent, ExpressionTree tree, ToStringKind toStringKind, VisitorState state) {
     Type type = type(tree);
     if (type.getKind() == TypeKind.NULL
